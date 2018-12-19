@@ -1,0 +1,48 @@
+body {
+  width: 400px;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  margin: 10px;
+}
+
+header {
+  font-weight: 500;
+  font-size: 20px;
+  text-align: center;
+}
+
+label,
+input[type=checkbox] {
+  cursor: pointer;
+  user-select: none;
+}
+
+td:nth-child(2) {
+  text-align: left;
+}
+td:nth-child(3) {
+  text-align: right;
+}
+
+code {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 0 2px;
+}
+
+a[id]:active {
+  opacity: 0.5;
+}
+
+[data-disabled=true] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.section {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 10px;
+  padding: 0 10px 10px 0;
+}

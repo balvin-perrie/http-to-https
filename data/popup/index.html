@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="index.css">
+  <meta charset="utf-8">
+</head>
+<body>
+  <header class="section">HTTP to HTTPS</header>
+  <table width=100% class="section">
+    <colgroup>
+      <col width=24>
+      <col>
+      <col>
+    </colgroup>
+    <tr>
+      <td><input type="checkbox" id="enabled"></td>
+      <td><label for="enabled">Enable HTTP to HTTPS</label></td>
+      <td>Global</td>
+    </tr>
+    <tr>
+      <td><input type="checkbox" id="regexp"></td>
+      <td><label for="regexp">Disable (based on <code id="detected-regexp">a regexp rule</code>)</label></td>
+      <td>Page</td>
+    </tr>
+    <tr>
+      <td><input type="checkbox" id="hostname"></td>
+      <td><label for="hostname">Disable (hostname matching)</label></td>
+      <td>Hostname</td>
+    </tr>
+  </table>
+  <div title="By purging cache, HTTPS support will be reevaluated">Purge cache for <a href="#" id="purge">this hostname</a> or <a href="#" id="purge-all">entire list</a></div>
+  <script defer type="text/javascript" src="index.js"></script>
+</body>
+</html>
