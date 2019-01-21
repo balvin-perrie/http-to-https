@@ -33,6 +33,10 @@ utils.policy = ({tabId, url, hostname}) => {
   if (url.startsWith('http://') !== true) {
     return true;
   }
+  // https://github.com/balvin-perrie/http-to-https/issues/2
+  if (url.indexOf('.onion') !== -1) {
+    return true;
+  }
   if (localStorage.getItem(hostname) === 'true') {
     icons[tabId] = [false, tabId, ' (hostname matching)'];
     return true;
@@ -114,7 +118,7 @@ var onBeforeNavigate = d => {
 
         chrome.tabs.update(d.tabId, {
           url: req.responseURL || original
-        }, () => icons[d.tabId] = [true, d.tabId, ' (cannot switched; switched to HTTPS)']);
+        }, () => icons[d.tabId] = [true, d.tabId, ' (switched to HTTPS)']);
       }
       else {
         icons[d.tabId] = [false, d.tabId, ` (${req.reason})`];
@@ -142,4 +146,30 @@ var onBeforeNavigate = d => {
   chrome.storage.local.get({
     enabled: true
   }, prefs => status(prefs.enabled));
+}
+
+{
+  const {onInstalled, setUninstallURL, getManifest} = chrome.runtime;
+  const {name, version} = getManifest();
+  const page = getManifest().homepage_url;
+  onInstalled.addListener(({reason, previousVersion}) => {
+    chrome.storage.local.get({
+      'faqs': true,
+      'last-update': 0
+    }, prefs => {
+      if (reason === 'install' || (prefs.faqs && reason === 'update')) {
+        const doUpdate = (Date.now() - prefs['last-update']) / 1000 / 60 / 60 / 24 > 45;
+        if (doUpdate && previousVersion !== version) {
+          chrome.tabs.create({
+            url: page + '?version=' + version +
+              (previousVersion ? '&p=' + previousVersion : '') +
+              '&type=' + reason,
+            active: reason === 'install'
+          });
+          chrome.storage.local.set({'last-update': Date.now()});
+        }
+      }
+    });
+  });
+  setUninstallURL(page + '?rd=feedback&name=' + encodeURIComponent(name) + '&version=' + version);
 }
